@@ -11,12 +11,13 @@
 <body>
     <header>
         <h1>Mis Notas</h1>
-        <button onclick="logout()">Cerrar Sesión</button>
+        <button onclick="window.location.href='create-note.html'">Crear Nota</button>
         <div class="search-container">
             <input type="text" id="search" placeholder="Buscar notas..." oninput="searchNotes()">
         </div>
     </header>
     <div id="notes-container"></div>
-    <script src="notes.js"></script>
+    <button onclick="logout()">Cerrar Sesión</button>
+    <script src="script.js"></script>
 </body>
 </html>
