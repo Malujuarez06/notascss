@@ -1,44 +1,41 @@
-// REGISTRO DE USUARIO
-document.getElementById('registerForm')?.addEventListener('submit', function(event) {
-    event.preventDefault(); // Evitar que el formulario se envíe normalmente
-    
-    // Obtener los valores de los campos
+// Registro de usuario
+function register() {
     const email = document.getElementById('register-email').value;
     const password = document.getElementById('register-password').value;
-    
-    // Validación básica (puedes agregar más validaciones aquí)
+
     if (email && password) {
-        // Guardar la información en el localStorage
         const users = JSON.parse(localStorage.getItem('users')) || [];
-        if (users.find(user => user.email === email)) {
+        const userExists = users.find(user => user.email === email);
+
+        if (userExists) {
             alert('Este correo ya está registrado.');
         } else {
+            // Guardamos al nuevo usuario
             users.push({ email, password });
             localStorage.setItem('users', JSON.stringify(users));
+
             alert('Registro exitoso. Ahora inicia sesión.');
-            window.location.href = 'login.html';
+
+            // Redirigir al login después del registro exitoso
+            window.location.href = 'index.html';
         }
     } else {
         alert('Por favor, completa todos los campos.');
     }
-});
+}
 
-// LOGIN DE USUARIO
-document.getElementById('loginForm')?.addEventListener('submit', function(event) {
-    event.preventDefault(); // Evitar que el formulario se envíe normalmente
-    
-    // Obtener los valores de los campos
+// Login de usuario
+document.getElementById('loginform')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
     const users = JSON.parse(localStorage.getItem('users')) || [];
-
-    // Verificar si el usuario existe
-    const user = users.find(user => user.email === email && user.password === password);
     
+    const user = users.find(user => user.email === email && user.password === password);
     if (user) {
-        // Guardar sesión iniciada
         localStorage.setItem('loggedIn', email);
-        window.location.href = 'notes.html'; // Redirige a la página de notas
+        window.location.href = 'notes.html'; // Redirigir a la página de notas
     } else {
         alert('Correo o contraseña incorrectos.');
     }
