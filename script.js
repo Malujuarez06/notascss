@@ -67,10 +67,10 @@ function generatePdf(index) {
             const imgWidth = usablePageWidth / 2;
             const imgHeight = (img.height / img.width) * imgWidth;
             doc.addImage(img, 'JPEG', margin + 10, titleY + 40, imgWidth, imgHeight);
-            doc.save($note.title.pdf);
+            doc.save(`${note.title}.pdf`);
         };
     } else {
-        doc.save($note.title.pdf);
+        doc.save(`${note.title}.pdf`);
     }
 }
 

@@ -3,27 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Notas</title>
-    <link rel="stylesheet" href="notes.css">
+    <title>Notas</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Incluye jsPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 </head>
 <body>
-
-    <!-- Barra de navegación -->
     <header>
-        <h1>Notas</h1>
+        <h1>Mis Notas</h1>
+        <button onclick="logout()">Cerrar Sesión</button>
         <div class="search-container">
-            <input type="text" id="search" placeholder="Buscar nota..." oninput="searchNotes()">
-            <button onclick="logout()">Cerrar sesión</button>
+            <input type="text" id="search" placeholder="Buscar notas..." oninput="searchNotes()">
         </div>
-        <button onclick="window.location.href='create-note.html'">Crear Nueva Nota</button>
     </header>
-
-    <!-- Contenedor de las notas -->
-    <div id="notes-container">
-        <!-- Las notas se cargarán aquí con JavaScript -->
-    </div>
-
+    <div id="notes-container"></div>
     <script src="notes.js"></script>
 </body>
 </html>
