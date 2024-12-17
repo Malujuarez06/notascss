@@ -110,7 +110,7 @@ function renderFilteredNotes(filteredNotes) {
 // Cerrar sesión
 function logout() {
     localStorage.removeItem('loggedIn'); // Eliminar la sesión almacenada
-    window.location.href = 'login.html'; // Redirigir al login
+    window.location.href = 'index.html'; // Redirigir al login
 }
 
 // Iniciar la carga de notas al cargar la página
