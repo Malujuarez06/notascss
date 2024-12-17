@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Notas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="notes-container">
+        <h1>Mis Notas</h1>
+        <!-- Barra de búsqueda -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Buscar nota..." onkeyup="searchNotes()">
+        </div>
+        
+        <a href="create-note.html" class="btn-create">Crear Nota</a>
+        
+        <div class="notes-list" id="notesList">
+            <!-- Aquí se mostrarían las notas -->
+            <div class="note" data-title="Nota de Ejemplo">
+                <h3>Nota de Ejemplo</h3>
+                <p>Contenido de la nota...</p>
+                <div class="actions">
+                    <a href="edit-note.html">Editar</a>
+                    <button class="btn-delete">Eliminar</button>
+                    <button class="btn-pdf">Generar PDF</button>
+                </div>
+            </div>
+
+            <div class="note" data-title="Nota Importante">
+                <h3>Nota Importante</h3>
+                <p>Contenido de una nota importante...</p>
+                <div class="actions">
+                    <a href="edit-note.html">Editar</a>
+                    <button class="btn-delete">Eliminar</button>
+                    <button class="btn-pdf">Generar PDF</button>
+                </div>
+            </div>
+
+            <!-- Más notas aquí -->
+        </div>
+
+        <a href="index.html" class="btn-logout">Cerrar sesión</a>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+/* Reseteo básico de estilos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+/* Estilo del contenedor principal */
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Títulos */
+h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+input, textarea {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Barra de búsqueda */
+.search-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#searchInput {
+    padding: 10px;
+    font-size: 16px;
+    width: 80%;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+/* Estilos para la lista de notas */
+.notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.note {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Acciones de cada nota */
+.actions {
+    margin-top: 15px;
+}
+
+.actions a, .actions button {
+    margin-right: 10px;
+}
+
+/* Botón de crear y volver */
+.btn-create, .btn-back, .btn-logout {
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+}
+
+.btn-create:hover, .btn-back:hover, .btn-logout:hover {
+    background-color: #218838;
+}
+
+/* Botón de eliminar */
+.btn-delete {
+    background-color: red;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: darkred;
+}
+
+/* Botón de generar PDF */
+.btn-pdf {
+    background-color: #ffc107;
+    color: white;
+}
+
+.btn-pdf:hover {
+    background-color: #e0a800;
+}

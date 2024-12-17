@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Nota</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="edit-note-container">
+        <h2>Editar Nota</h2>
+        <form action="/edit-note" method="POST" enctype="multipart/form-data">
+            <input type="text" name="title" value="Título de la nota" required>
+            <textarea name="content" required>Contenido de la nota</textarea>
+            <input type="file" name="image" accept="image/*">
+            <button type="submit">Guardar Cambios</button>
+        </form>
+        <a href="notes.html" class="btn-back">Volver a Mis Notas</a>
+    </div>
+</body>
+</html>
