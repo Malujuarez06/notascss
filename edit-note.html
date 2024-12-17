@@ -5,17 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Nota</title>
     <link rel="stylesheet" href="styles.css">
+    <!DOCTYPE html> <html lang="es"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Notas</title> <link rel="stylesheet" href="styles.css"> <!-- Incluye jsPDF --> <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <div class="edit-note-container">
-        <h2>Editar Nota</h2>
-        <form action="/edit-note" method="POST" enctype="multipart/form-data">
-            <input type="text" name="title" value="Título de la nota" required>
-            <textarea name="content" required>Contenido de la nota</textarea>
-            <input type="file" name="image" accept="image/*">
-            <button type="submit">Guardar Cambios</button>
-        </form>
-        <a href="notes.html" class="btn-back">Volver a Mis Notas</a>
+    <div id="edit-note-container">
+        <header>
+            <h2>Editar Nota</h2>
+        </header>
+        <section id="edit-note">
+            <form id="edit-note-form">
+                <label for="note-title">Título de la nota</label>
+                <input type="text" id="note-title" placeholder="Título de la nota" required>
+                
+                <label for="note-content">Contenido de la nota</label>
+                <textarea id="note-content" placeholder="Contenido de la nota" required></textarea>
+                
+                <label for="note-image">Imagen de la nota</label>
+                <input type="file" id="note-image" accept="image/*">
+                <img id="note-image-preview" style="display:none; max-width:50%;" alt="Vista previa de la imagen">
+                
+                <button type="submit">Guardar Cambios</button>
+            </form>
+        </section>
     </div>
+    <script src="script.js"></script>
 </body>
 </html>
+

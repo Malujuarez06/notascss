@@ -1,91 +1,232 @@
-// Manejo del formulario de registro
-document.getElementById('registerForm')?.addEventListener('submit', function(event) {
-    event.preventDefault(); // Evitar que el formulario se envíe normalmente
-    
-    // Obtener los valores de los campos
-    let username = document.getElementById('username').value;
-    let password = document.getElementById('password').value;
-    
-    // Validación básica (puedes agregar más validaciones aquí)
-    if (username && password) {
-        // Guardar la información en el localStorage (simulando un registro)
-        localStorage.setItem('username', username);
-        localStorage.setItem('password', password);
-        
-        // Redirigir a la página de notas
-        window.location.href = 'notes.html';
-    } else {
-        alert('Por favor complete todos los campos');
-    }
-});
+// Cargar las notas almacenadas en localStorage
+const notes = JSON.parse(localStorage.getItem("notes")) || [];
 
-// Manejo del formulario de login
-document.getElementById('loginForm')?.addEventListener('submit', function(event) {
-    event.preventDefault(); // Evitar que el formulario se envíe normalmente
-    
-    // Obtener los valores de los campos
-    let username = document.getElementById('username').value;
-    let password = document.getElementById('password').value;
-    
-    // Verificar si el usuario existe (usando localStorage en este caso)
-    let storedUsername = localStorage.getItem('username');
-    let storedPassword = localStorage.getItem('password');
-    
-    if (username === storedUsername && password === storedPassword) {
-        // Redirigir a la página de notas
-        window.location.href = 'notes.html';
-    } else {
-        alert('Usuario o contraseña incorrectos');
-    }
-});
+// Función para mostrar las notas
+function renderNotes() {
+    const notesContainer = document.getElementById("notes-container");
+    notesContainer.innerHTML = ''; // Limpiar las notas previas
 
-// Función para filtrar las notas conforme el usuario escribe
-function searchNotes() {
-    // Obtener el valor de la barra de búsqueda
-    let input = document.getElementById('searchInput');
-    let filter = input.value.toLowerCase();
-    
-    // Obtener todas las notas
-    let notes = document.querySelectorAll('.note');
-    
-    // Iteramos por cada nota para verificar si el título contiene el texto de búsqueda
-    notes.forEach(function(note) {
-        let title = note.getAttribute('data-title').toLowerCase();
-        
-        // Si el título de la nota contiene el texto de búsqueda, la mostramos
-        if (title.indexOf(filter) > -1) {
-            note.style.display = ''; // Muestra la nota
-        } else {
-            note.style.display = 'none'; // Oculta la nota
-        }
+    notes.forEach((note, index) => {
+        const noteElement = document.createElement("div");
+        noteElement.classList.add("note");
+
+        // Mostrar la imagen, título y contenido de la nota
+        noteElement.innerHTML = `
+            <img src="${note.image}" class="note-image" alt="Nota imagen">
+            <h3>${note.title}</h3>
+            <p>${note.content}</p>
+            <button onclick="editNote(${index})">Editar</button>
+            <button onclick="deleteNote(${index})">Eliminar</button>
+            <button onclick="generatePdf(${index})">Generar PDF</button>
+        `;
+        notesContainer.appendChild(noteElement);
     });
 }
 
-// Función para generar un PDF con el contenido de la nota
-document.querySelectorAll('.btn-pdf').forEach(button => {
-    button.addEventListener('click', function() {
-        // Obtener el contenido de la nota
-        const noteContent = this.closest('.note').querySelector('p').innerText;
-        
-        // Crear un objeto jsPDF
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF();
-        
-        // Añadir el contenido de la nota al PDF
-        pdf.text(noteContent, 10, 10);
-        
-        // Guardar el PDF con el nombre 'nota.pdf'
-        pdf.save('nota.pdf');
-    });
-});
+// Función para editar una nota
+function editNote(index) {
+    const note = notes[index];
+    localStorage.setItem("noteToEdit", JSON.stringify(note));
+    window.location.href = "edit-note.html"; // Redirige a la página de edición
+}
 
 // Función para eliminar una nota
-document.querySelectorAll('.btn-delete').forEach(button => {
-    button.addEventListener('click', function() {
-        // Confirmar si el usuario realmente desea eliminar la nota
-        if (confirm('¿Estás seguro de que deseas eliminar esta nota?')) {
-            // Eliminar el contenedor de la nota
-            this.closest('.note').remove();
-        }
+function deleteNote(index) {
+    notes.splice(index, 1);
+    localStorage.setItem("notes", JSON.stringify(notes));
+    renderNotes();
+}
+
+// Función para generar un PDF de una nota
+function generatePdf(index) {
+    const note = notes[index];
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const margin = 10;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const usablePageWidth = pageWidth - 2 * margin;
+
+    doc.setDrawColor(0);
+    doc.setLineWidth(1);
+    doc.rect(margin, margin, usablePageWidth, pageHeight - 2 * margin);
+
+    const titleX = pageWidth / 2;
+    const titleY = margin + 20;
+    doc.setFontSize(16);
+    doc.text(note.title, titleX, titleY, { align: 'center' });
+
+    doc.setFontSize(12);
+    doc.text(note.content, margin + 10, titleY + 20);
+
+    if (note.image) {
+        const img = new Image();
+        img.src = note.image;
+        img.onload = function () {
+            const imgWidth = usablePageWidth / 2;
+            const imgHeight = (img.height / img.width) * imgWidth;
+            doc.addImage(img, 'JPEG', margin + 10, titleY + 40, imgWidth, imgHeight);
+            doc.save($note.title.pdf);
+        };
+    } else {
+        doc.save($note.title.pdf);
+    }
+}
+
+// Función para buscar notas
+function searchNotes() {
+    const searchQuery = document.getElementById("search").value.toLowerCase();
+    const filteredNotes = notes.filter(note => note.title.toLowerCase().includes(searchQuery));
+    renderFilteredNotes(filteredNotes);
+}
+
+function renderFilteredNotes(filteredNotes) {
+    const notesContainer = document.getElementById("notes-container");
+    notesContainer.innerHTML = '';
+    filteredNotes.forEach((note, index) => {
+        const noteElement = document.createElement("div");
+        noteElement.classList.add("note");
+        noteElement.innerHTML = `
+            <img src="${note.image}" class="note-image" alt="Nota imagen">
+            <h3>${note.title}</h3>
+            <p>${note.content}</p>
+            <button onclick="editNote(${index})">Editar</button>
+            <button onclick="deleteNote(${index})">Eliminar</button>
+            <button onclick="generatePdf(${index})">Generar PDF</button>
+        `;
+        notesContainer.appendChild(noteElement);
     });
-})
+}
+
+// Cerrar sesión
+function logout() {
+    localStorage.removeItem('loggedIn');
+    window.location.href = 'index.html';
+}
+
+// Función para cargar una nota para editar
+function loadNoteToEdit() {
+    const note = JSON.parse(localStorage.getItem("noteToEdit")) || {};
+    document.getElementById("note-title").value = note.title || '';
+    document.getElementById("note-content").value = note.content || '';
+
+    const noteImagePreview = document.getElementById("note-image-preview");
+    if (note.image) {
+        noteImagePreview.src = note.image;
+        noteImagePreview.style.display = "block";
+    } else {
+        noteImagePreview.style.display = "none";
+    }
+}
+
+// Guardar cambios de una nota editada
+document.getElementById("edit-note-form")?.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const notes = JSON.parse(localStorage.getItem("notes")) || [];
+    const noteToEdit = JSON.parse(localStorage.getItem("noteToEdit")) || {};
+    const index = notes.findIndex(note => note.title === noteToEdit.title);
+
+    const updatedNote = {
+        title: document.getElementById("note-title").value,
+        content: document.getElementById("note-content").value,
+        image: noteToEdit.image
+    };
+
+    if (document.getElementById("note-image").files.length > 0) {
+        const file = document.getElementById("note-image").files[0];
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            updatedNote.image = event.target.result;
+            notes[index] = updatedNote;
+            localStorage.setItem("notes", JSON.stringify(notes));
+            window.location.href = "notes.html";
+        };
+        reader.readAsDataURL(file);
+    } else {
+        notes[index] = updatedNote;
+        localStorage.setItem("notes", JSON.stringify(notes));
+        window.location.href = "notes.html";
+    }
+});
+
+// Crear una nueva nota
+document.getElementById("create-note-form")?.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const title = document.getElementById("note-title").value;
+    const content = document.getElementById("note-content").value;
+    const imageFile = document.getElementById("note-image").files[0];
+
+    if (title && content) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const newNote = {
+                title,
+                content,
+                image: e.target.result
+            };
+            const notes = JSON.parse(localStorage.getItem("notes")) || [];
+            notes.push(newNote);
+            localStorage.setItem("notes", JSON.stringify(notes));
+            window.location.href = "notes.html";
+        };
+        if (imageFile) {
+            reader.readAsDataURL(imageFile);
+        } else {
+            const newNote = { title, content, image: "" };
+            notes.push(newNote);
+            localStorage.setItem("notes", JSON.stringify(notes));
+            window.location.href = "notes.html";
+        }
+    } else {
+        alert('Por favor, completa todos los campos.');
+    }
+});
+
+// Registro de usuario
+function register() {
+    const email = document.getElementById('register-email').value;
+    const password = document.getElementById('register-password').value;
+
+    if (email && password) {
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        if (users.find(user => user.email === email)) {
+            alert('Este correo ya está registrado.');
+        } else {
+            users.push({ email, password });
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Registro exitoso. Ahora inicia sesión.');
+            window.location.href = 'index.html';
+        }
+    } else {
+        alert('Por favor, completa todos los campos.');
+    }
+}
+
+// Login de usuario
+document.getElementById('loginform')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+
+    if (users.find(user => user.email === email && user.password === password)) {
+        localStorage.setItem('loggedIn', email);
+        window.location.href = 'notes.html';
+    } else {
+        alert('Correo o contraseña incorrectos.');
+    }
+});
+
+// Inicializar
+window.onload = () => {
+    if (document.getElementById("notes-container")) {
+        renderNotes();
+    }
+    if (document.getElementById("edit-note-form")) {
+        loadNoteToEdit();
+    }
+};
