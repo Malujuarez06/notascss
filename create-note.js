@@ -1,3 +1,4 @@
+// Función para crear una nueva nota
 document.getElementById("create-note-form").addEventListener("submit", function(event) {
     event.preventDefault();
 
@@ -27,5 +28,7 @@ document.getElementById("create-note-form").addEventListener("submit", function(
             localStorage.setItem("notes", JSON.stringify(notes));
             window.location.href = "notes.html"; // Redirigir a la página principal de notas
         }
+    } else {
+        alert('Por favor, completa todos los campos.');
     }
 });
